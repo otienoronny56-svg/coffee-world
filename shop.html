@@ -52,6 +52,16 @@
     </header>
 
     <main class="shop-container">
+        <div class="shop-filters" style="display: flex; justify-content: flex-end; margin-bottom: 2rem; gap: 1rem; align-items: center;">
+            <label for="sort-select" style="color: var(--gold); font-weight: 500;">Sort By:</label>
+            <select id="sort-select" style="padding: 0.6rem; border-radius: 4px; border: 1px solid var(--gold); background: rgba(11, 35, 24, 0.8); color: var(--white); cursor: pointer;">
+                <option value="newest">Newest Arrivals</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="roast-light">Roast: Light to Dark</option>
+                <option value="roast-dark">Roast: Dark to Light</option>
+            </select>
+        </div>
         <div id="product-grid" class="product-grid">
             <div class="loading-text">Brewing your catalog...</div>
         </div>
