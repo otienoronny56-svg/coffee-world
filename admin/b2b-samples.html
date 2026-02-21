@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2B Sample Requests | Coffee World Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-layout">
+
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <img src="../assets/images/coffee-logo.png" alt="CWI Logo" class="admin-logo">
+            <h2>Admin Portal</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html">Financial HQ</a></li>
+            <li><a href="catalog.html">Catalog Management</a></li>
+            <li><a href="b2c-orders.html">B2C Orders</a></li>
+            <li><a href="b2b-samples.html" class="active">B2B Sample Requests</a></li>
+            <li><a href="events.html">Event Manager</a></li>
+            <li><a href="#" id="logout-btn" style="color: #ef4444;">Logout</a></li>
+            <li><a href="../index.html" target="_blank">View Live Site ↗</a></li>
+        </ul>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1>International Sample Requests</h1>
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <button id="theme-toggle" class="btn secondary-btn" style="padding: 0.5rem 0.8rem;">🌙</button>
+                <input type="text" id="request-search" placeholder="Search Company or Contact..." class="admin-toolbar-input">
+                <select id="status-filter" class="admin-toolbar-select">
+                    <option value="active" selected>Active Requests</option>
+                    <option value="processing">Processing Only</option>
+                    <option value="completed">Completed Only</option>
+                    <option value="all">All Requests</option>
+                </select>
+                <button class="btn secondary-btn" id="refresh-samples-btn">🔄 Refresh</button>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Company & Contact</th>
+                        <th>Coffee Requested</th>
+                        <th>Shipping (Courier Account)</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="samples-body">
+                    <tr><td colspan="6">Loading requests from Supabase...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="admin-footer">
+            <p>Engineered by Systems by Ronny <a href="tel:0745806488">(0745806488)</a></p>
+        </footer>
+    </main>
+
+    <script type="module" src="../js/supabase-client.js"></script>
+    <script type="module" src="b2b-samples.js"></script>
+    <script type="module" src="auth.js"></script>
+</body>
+</html>

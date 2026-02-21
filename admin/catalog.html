@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog Management | Coffee World Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-layout">
+
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <img src="../assets/images/coffee-logo.png" alt="CWI Logo" class="admin-logo">
+            <h2>Admin Portal</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html">Financial HQ</a></li>
+            <li><a href="catalog.html" class="active">Catalog Management</a></li>
+            <li><a href="b2c-orders.html">B2C Orders</a></li>
+            <li><a href="b2b-samples.html">B2B Sample Requests</a></li>
+            <li><a href="events.html">Event Manager</a></li>
+            <li><a href="#" id="logout-btn" style="color: #ef4444;">Logout</a></li>
+            <li><a href="../index.html" target="_blank">View Live Site ↗</a></li>
+        </ul>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1>Product Catalog</h1>
+            <div style="display: flex; gap: 1rem;">
+                <button id="theme-toggle" class="btn secondary-btn" style="padding: 0.5rem 0.8rem;">🌙</button>
+                <button id="add-product-btn" class="btn primary-btn">+ Add New Coffee</button>
+            </div>
+        </header>
+
+        <div class="table-container">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Coffee Name</th>
+                        <th>Type (B2B/B2C)</th>
+                        <th>Price / Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-catalog-body">
+                    <tr><td colspan="5">Loading catalog from Supabase...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="admin-footer">
+            <p>Engineered by Systems by Ronny <a href="tel:0745806488">(0745806488)</a></p>
+        </footer>
+    </main>
+
+    <div id="product-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content admin-modal" style="width: 600px; max-height: 90vh; overflow-y: auto;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 id="modal-title">Add New Coffee</h2>
+                <button type="button" id="close-modal-btn" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            
+            <form id="product-form">
+                <div class="form-group">
+                    <label>Target Market (Catalog)</label>
+                    <select id="prod-type" required>
+                        <option value="roasted_retail">B2C - Local Retail (Roasted)</option>
+                        <option value="green_export">B2B - Global Export (Green)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Coffee Name</label>
+                    <input type="text" id="prod-name" required placeholder="e.g., Nyeri AA or Sunrise Blend">
+                </div>
+
+                <div class="form-group">
+                    <label>Description & Tasting Notes</label>
+                    <textarea id="prod-desc" rows="3" required placeholder="Bold, smoky, and full-bodied..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Product Image</label>
+                    <input type="file" id="prod-image-file" accept="image/png, image/jpeg, image/webp" class="admin-file-input">
+                    <small style="color: #666; display: block; margin-top: 4px;">Square images work best. Max 2MB.</small>
+                </div>
+
+                <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
+
+                <div id="b2c-fields">
+                    <h3 class="admin-section-title">B2C Retail Details</h3>
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Retail Stock (Bags)</label>
+                            <input type="number" id="prod-retail-stock" placeholder="e.g., 50">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Roast Level</label>
+                            <select id="prod-roast">
+                                <option value="Light">Light Roast</option>
+                                <option value="Medium">Medium Roast</option>
+                                <option value="Dark">Dark Roast</option>
+                                <option value="Espresso">Espresso Roast</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Original Price (KSh) <small>Optional</small></label>
+                            <input type="number" id="prod-original-price" placeholder="e.g., 1800">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Current Offer Price (KSh) *</label>
+                            <input type="number" id="prod-current-price" placeholder="e.g., 1500">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="b2b-fields" class="admin-section-box" style="display: none;">
+                    <h3 class="admin-section-title">B2B Export Details</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Species Type *</label>
+                            <select id="prod-species">
+                                <option value="Arabica">Arabica</option>
+                                <option value="Robusta">Robusta</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Origin *</label>
+                            <select id="prod-origin">
+                                <option value="Kenya">Kenya</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="India">India</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Grade *</label>
+                            <select id="prod-grade">
+                                <option value="AAA">AAA</option>
+                                <option value="AA">AA</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="PB">PB</option>
+                                <option value="C">C</option>
+                                <option value="BITS">BITS</option>
+                                <option value="BLACKS">BLACKS</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Processing *</label>
+                            <select id="prod-process">
+                                <option value="Washed">Washed</option>
+                                <option value="Natural">Natural</option>
+                                <option value="Honey">Honey</option>
+                                <option value="Wet-Hulled">Wet-Hulled</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1;">
+                            <label>Cupping Score</label>
+                            <input type="number" step="0.25" id="prod-score" placeholder="e.g., 87.50">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Available 60kg Sacks</label>
+                            <input type="number" id="prod-b2b-stock" placeholder="e.g., 300">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn primary-btn" id="save-product-btn" style="width: 100%;">Save Coffee to Catalog</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../js/supabase-client.js"></script>
+    <script type="module" src="catalog.js"></script>
+    <script type="module" src="auth.js"></script>
+</body>
+</html>

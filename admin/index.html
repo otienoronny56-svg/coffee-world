@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial HQ | Coffee World Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="admin-layout">
+
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">
+            <img src="../assets/images/coffee-logo.png" alt="CWI Logo" class="admin-logo">
+            <h2>Admin Portal</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html" class="active">Financial HQ</a></li>
+            <li><a href="catalog.html">Catalog Management</a></li>
+            <li><a href="b2c-orders.html">B2C Orders</a></li>
+            <li><a href="b2b-samples.html">B2B Sample Requests</a></li>
+            <li><a href="events.html">Event Manager</a></li>
+            <li><a href="#" id="logout-btn" style="color: #ef4444;">Logout</a></li>
+            <li><a href="../index.html" target="_blank">View Live Site ↗</a></li>
+        </ul>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1>Financial Headquarters</h1>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <div id="custom-date-inputs" style="display: none; gap: 0.5rem;">
+                    <input type="date" id="filter-start-date" class="admin-toolbar-date">
+                    <input type="date" id="filter-end-date" class="admin-toolbar-date">
+                </div>
+                <select id="dashboard-filter" class="admin-toolbar-select">
+                    <option value="all">All Time</option>
+                    <option value="today">Today (Hourly)</option>
+                    <option value="week">Last 7 Days</option>
+                    <option value="month">This Month</option>
+                    <option value="year">This Year</option>
+                    <option value="custom">Custom Range</option>
+                </select>
+                <button id="apply-filter-btn" class="btn primary-btn">Filter</button>
+                <button id="download-report-btn" class="btn secondary-btn">Download Report</button>
+                <button id="theme-toggle" class="btn secondary-btn" style="padding: 0.5rem 0.8rem;">🌙</button>
+            </div>
+        </header>
+
+        <!-- Summary Cards -->
+        <div class="dashboard-grid">
+            <div class="stat-card">
+                <h3>Total Revenue</h3>
+                <p class="stat-value" id="total-revenue">KSh 0</p>
+                <span class="stat-change positive">Lifetime Sales</span>
+            </div>
+            <div class="stat-card">
+                <h3>Active Orders</h3>
+                <p class="stat-value" id="active-orders">0</p>
+                <span class="stat-change">Pending & Processing</span>
+            </div>
+            <div class="stat-card">
+                <h3>B2B Leads</h3>
+                <p class="stat-value" id="b2b-leads">0</p>
+                <span class="stat-change">Sample Requests</span>
+            </div>
+            <div class="stat-card">
+                <h3>Low Stock Alerts</h3>
+                <p class="stat-value" id="low-stock">0</p>
+                <span class="stat-change negative">Items below 10 units</span>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-container">
+            <div class="chart-card" style="grid-column: span 2;">
+                <h3 id="revenue-chart-title">Revenue Performance</h3>
+                <canvas id="revenueChart" style="max-height: 300px;"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Order Status Breakdown</h3>
+                <canvas id="statusChart" style="max-height: 300px;"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Top Selling Products (Preferred Orders)</h3>
+                <canvas id="productsChart" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+
+        <footer class="admin-footer">
+            <p>Engineered by Systems by Ronny <a href="tel:0745806488">(0745806488)</a></p>
+        </footer>
+    </main>
+
+    <script type="module" src="../js/supabase-client.js"></script>
+    <script type="module" src="dashboard.js"></script>
+    <script type="module" src="auth.js"></script>
+</body>
+</html>
