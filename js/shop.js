@@ -71,7 +71,7 @@ function renderShop(coffees) {
             thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
             if (createdDate > thirtyDaysAgo) {
-                badgesHtml += `<span class="new-badge" style="position: absolute; top: ${topOffset}rem; left: 1rem; background: var(--gold); color: var(--primary-green); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">NEW ARRIVAL</span>`;
+                badgesHtml += `<span class="new-badge" style="top: ${topOffset}rem;">NEW ARRIVAL</span>`;
             }
 
             const card = document.createElement('div');
