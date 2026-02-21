@@ -2,6 +2,11 @@ import { supabase } from '../js/supabase-client.js';
 
 // 1. Check Auth State (Run immediately)
 async function checkAuth() {
+    // Warning if running directly from file system
+    if (window.location.protocol === 'file:') {
+        console.warn("⚠️ Warning: You are running via file:// protocol. Authentication requires a local server (like Live Server) to work correctly.");
+    }
+
     const { data: { session } } = await supabase.auth.getSession();
 
     const isLoginPage = window.location.pathname.includes('login.html');
@@ -14,7 +19,11 @@ async function checkAuth() {
     } else {
         // If on an admin page and NOT logged in, go to login
         if (!session) {
-            window.location.href = 'login.html';
+            window.location.href = 'login.html?error=access_denied';
+        } else {
+            // User IS logged in: Reveal the page (undoing the CSS hiding)
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = '1';
         }
     }
 }
@@ -33,7 +42,8 @@ async function login(email, password) {
     });
 
     if (error) {
-        alert('Access Denied: ' + error.message);
+        console.error("Login Error:", error); // See console for exact details
+        alert('Login Failed: ' + error.message);
         submitBtn.textContent = originalText;
         submitBtn.disabled = false;
     } else {
@@ -63,6 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('password').value;
             login(email, password);
         });
+    }
+    
+    // Check for Access Denied error in URL
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error') === 'access_denied') {
+        alert("⚠️ Access Denied: You must be logged in to view the Admin Portal.");
+        // Clean the URL so the alert doesn't show again on refresh
+        window.history.replaceState({}, document.title, window.location.pathname);
     }
 
     // Handle Logout Button (in sidebar)

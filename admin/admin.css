@@ -35,6 +35,10 @@ body.admin-layout {
     height: 100vh;
     background-color: var(--admin-bg);
     color: var(--text-dark);
+    /* Security: Hide content until Auth Check completes in auth.js */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in;
 }
 
 /* Sidebar */
