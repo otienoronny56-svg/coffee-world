@@ -28,18 +28,21 @@
     </aside>
 
     <main class="admin-main">
-        <header class="admin-header">
-            <h1>Retail Orders & M-Pesa Verification</h1>
-            <div style="display: flex; gap: 1rem; align-items: center;">
+        <header class="admin-header animate-fade">
+            <div>
+                <h1>Retail Orders</h1>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Verify M-Pesa payments and manage fulfillment for B2C customers.</p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
                 <button id="theme-toggle" class="btn secondary-btn" style="padding: 0.5rem 0.8rem;">🌙</button>
-                <input type="text" id="order-search" placeholder="Search Name or M-Pesa..." class="admin-toolbar-input">
-                <select id="status-filter" class="admin-toolbar-select">
+                <input type="text" id="order-search" placeholder="Search customer or code..." class="form-group" style="margin-bottom: 0; width: 220px; padding: 0.6rem;">
+                <select id="status-filter" class="form-group" style="margin-bottom: 0; width: auto; padding: 0.6rem;">
                     <option value="active" selected>Active Orders</option>
                     <option value="processing">Processing Only</option>
                     <option value="completed">Completed Only</option>
                     <option value="all">All Orders</option>
                 </select>
-                <button class="btn secondary-btn" id="refresh-orders-btn">🔄 Refresh</button>
+                <button class="btn primary-btn" id="refresh-orders-btn">🔄 Refresh</button>
             </div>
         </header>
 

@@ -28,18 +28,21 @@
     </aside>
 
     <main class="admin-main">
-        <header class="admin-header">
-            <h1>International Sample Requests</h1>
-            <div style="display: flex; gap: 1rem; align-items: center;">
+        <header class="admin-header animate-fade">
+            <div>
+                <h1>Global Sample Requests</h1>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Manage international B2B leads, green coffee samples, and courier arrangements.</p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
                 <button id="theme-toggle" class="btn secondary-btn" style="padding: 0.5rem 0.8rem;">🌙</button>
-                <input type="text" id="request-search" placeholder="Search Company or Contact..." class="admin-toolbar-input">
-                <select id="status-filter" class="admin-toolbar-select">
+                <input type="text" id="request-search" placeholder="Search company or contact..." class="form-group" style="margin-bottom: 0; width: 220px; padding: 0.6rem;">
+                <select id="status-filter" class="form-group" style="margin-bottom: 0; width: auto; padding: 0.6rem;">
                     <option value="active" selected>Active Requests</option>
                     <option value="processing">Processing Only</option>
                     <option value="completed">Completed Only</option>
                     <option value="all">All Requests</option>
                 </select>
-                <button class="btn secondary-btn" id="refresh-samples-btn">🔄 Refresh</button>
+                <button class="btn primary-btn" id="refresh-samples-btn">🔄 Refresh</button>
             </div>
         </header>
 

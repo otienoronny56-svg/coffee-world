@@ -122,19 +122,43 @@ function renderOrders() {
         // Build the row
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td><small style="color:#666;">${dateFormatted}</small><br><strong>${timeFormatted}</strong></td>
             <td>
-                <strong>${customerName}</strong><br>
-                <small>📞 ${customerPhone}</small><br>
-                <small>📍 ${address}</small>
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-weight: 700;">${dateFormatted}</span>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);">${timeFormatted}</span>
+                </div>
             </td>
-            <td><small>${items}</small></td>
             <td>
-                <strong>KSh ${total}</strong><br>
-                <span class="data-highlight" style="font-family: monospace; letter-spacing: 1px;">${mpesa}</span>
+                <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                    <span style="font-weight: 700; color: var(--text-dark);">${customerName}</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted);"><i style="font-style: normal; opacity: 0.6;">📞</i> ${customerPhone}</span>
+                    <span style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.2;"><i style="font-style: normal; opacity: 0.6;">📍</i> ${address}</span>
+                </div>
             </td>
-            <td><span class="status-badge ${statusClass}" style="text-transform: capitalize;">${currentStatus}</span></td>
-            <td>${actionBtnHTML}${printBtnHTML}</td>
+            <td>
+                <div style="max-width: 250px; font-size: 0.85rem; font-weight: 500; color: var(--text-dark);">
+                    ${items}
+                </div>
+            </td>
+            <td>
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-weight: 700; color: var(--accent);">KSh ${total.toLocaleString()}</span>
+                    <span class="status-badge" style="background: rgba(15, 23, 42, 0.05); color: var(--text-dark); font-family: monospace; font-size: 0.7rem; margin-top: 0.25rem;">${mpesa}</span>
+                </div>
+            </td>
+            <td><span class="status-badge ${statusClass}">${currentStatus}</span></td>
+            <td>
+                <div class="flex-row">
+                    ${actionBtnHTML}
+                    <button class="btn secondary-btn print-btn" data-id="${order.id}" title="Print Packing Slip" style="padding: 0.5rem; border-color: var(--border);">
+                        🖨️
+                    </button>
+                    ${currentStatus === 'completed' ? `
+                    <button class="btn secondary-btn" style="padding: 0.5rem; opacity: 0.5; pointer-events: none;">
+                        ✅
+                    </button>` : ''}
+                </div>
+            </td>
         `;
         tableBody.appendChild(row);
     });
@@ -184,14 +208,35 @@ async function updateOrderStatus(id, newStatus) {
 }
 
 // --- Print Packing Slip Logic ---
-function printPackingSlip(orderId) {
+async function printPackingSlip(orderId) {
     const order = allOrders.find(o => o.id == orderId);
     if (!order) return;
 
-    // Get items
-    const orderItems = allOrderItems.filter(i => i.order_id == orderId);
+    // Open window immediately to avoid popup blockers
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+        alert('Please allow popups to print receipts.');
+        return;
+    }
+    printWindow.document.write('<html><body style="font-family:sans-serif; text-align:center; padding:2rem;">Loading receipt data...</body></html>');
+
+    // Fetch items specifically for this order (Robust Fix)
+    let { data: orderItems } = await supabase
+        .from('b2c_order_items')
+        .select('*')
+        .eq('order_id', orderId);
+    
+    orderItems = orderItems || [];
+
+    // Fetch product names for these items
+    const productIds = orderItems.map(i => i.product_id);
+    const { data: products } = await supabase
+        .from('products')
+        .select('id, name')
+        .in('id', productIds);
+
     const itemsWithDetails = orderItems.map(item => {
-        const product = allProducts.find(p => p.id == item.product_id);
+        const product = (products || []).find(p => p.id == item.product_id);
         return {
             ...item,
             name: product ? product.name : 'Unknown Item',
@@ -199,8 +244,8 @@ function printPackingSlip(orderId) {
         };
     });
 
-    // Generate HTML
-    const printWindow = window.open('', '_blank');
+    // Generate HTML (Overwrite loading message)
+    printWindow.document.open();
     printWindow.document.write(`
         <html>
         <head>

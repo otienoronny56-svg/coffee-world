@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="admin.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body class="admin-layout">
 
@@ -17,76 +18,129 @@
             <h2>Admin Portal</h2>
         </div>
         <ul class="sidebar-nav">
-            <li><a href="index.html" class="active">Financial HQ</a></li>
-            <li><a href="catalog.html">Catalog Management</a></li>
-            <li><a href="b2c-orders.html">B2C Orders</a></li>
-            <li><a href="b2b-samples.html">B2B Sample Requests</a></li>
-            <li><a href="events.html">Event Manager</a></li>
-            <li><a href="#" id="logout-btn" style="color: #ef4444;">Logout</a></li>
-            <li><a href="../index.html" target="_blank">View Live Site ↗</a></li>
+            <li><a href="index.html" class="active"><i data-lucide="bar-chart-3"></i> Financial HQ</a></li>
+            <li><a href="catalog.html"><i data-lucide="package"></i> Catalog Management</a></li>
+            <li><a href="b2c-orders.html"><i data-lucide="shopping-cart"></i> B2C Orders</a></li>
+            <li><a href="b2b-samples.html"><i data-lucide="globe"></i> B2B Sample Requests</a></li>
+            <li><a href="events.html"><i data-lucide="calendar"></i> Event Manager</a></li>
+            <li><a href="#" id="logout-btn" style="color: #ef4444;"><i data-lucide="log-out"></i> Logout</a></li>
+            <li><a href="../index.html" target="_blank"><i data-lucide="external-link"></i> Live Site</a></li>
         </ul>
     </aside>
 
     <main class="admin-main">
-        <header class="admin-header">
-            <h1>Financial Headquarters</h1>
-            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+        <header class="admin-header animate-fade">
+            <div>
+                <h1 style="display: flex; align-items: center; gap: 0.75rem;">
+                    <i data-lucide="layout-dashboard" class="accent-icon"></i>
+                    Financial Headquarters
+                </h1>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Standardized High-Density Intelligence Portal</p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
                 <div id="custom-date-inputs" style="display: none; gap: 0.5rem;">
                     <input type="date" id="filter-start-date" class="admin-toolbar-date">
                     <input type="date" id="filter-end-date" class="admin-toolbar-date">
                 </div>
-                <select id="dashboard-filter" class="admin-toolbar-select">
+                <select id="dashboard-filter" class="form-group" style="margin-bottom: 0; width: auto; padding: 0.6rem;">
                     <option value="all">All Time</option>
-                    <option value="today">Today (Hourly)</option>
+                    <option value="today">Today</option>
                     <option value="week">Last 7 Days</option>
                     <option value="month">This Month</option>
                     <option value="year">This Year</option>
                     <option value="custom">Custom Range</option>
                 </select>
-                <button id="apply-filter-btn" class="btn primary-btn">Filter</button>
-                <button id="download-report-btn" class="btn secondary-btn">Download Report</button>
+                <button id="apply-filter-btn" class="btn primary-btn"><i data-lucide="refresh-cw"></i> Update</button>
+                <button id="download-report-btn" class="btn secondary-btn"><i data-lucide="download"></i> Export</button>
                 <button id="theme-toggle" class="btn secondary-btn" style="padding: 0.5rem 0.8rem;">🌙</button>
             </div>
         </header>
 
-        <!-- Summary Cards -->
-        <div class="dashboard-grid">
-            <div class="stat-card">
-                <h3>Total Revenue</h3>
+        <!-- Summary Cards Grid (Information Rich) -->
+        <div class="dashboard-grid animate-slide">
+            <div class="card stat-card density-card">
+                <div class="flex-row justify-between" style="margin-bottom: 0.5rem;">
+                    <span class="stat-label">TOTAL REVENUE</span>
+                    <i data-lucide="dollar-sign" class="stat-icon"></i>
+                </div>
                 <p class="stat-value" id="total-revenue">KSh 0</p>
-                <span class="stat-change positive">Lifetime Sales</span>
+                <div class="stat-trend trend-up">
+                    <span id="revenue-pc-change">+0.0%</span>
+                    <small>vs prev. period</small>
+                </div>
             </div>
-            <div class="stat-card">
-                <h3>Active Orders</h3>
+            
+            <div class="card stat-card density-card">
+                <div class="flex-row justify-between" style="margin-bottom: 0.5rem;">
+                    <span class="stat-label">ACTIVE ORDERS</span>
+                    <i data-lucide="shopping-bag" class="stat-icon"></i>
+                </div>
                 <p class="stat-value" id="active-orders">0</p>
-                <span class="stat-change">Pending & Processing</span>
+                <div class="status-badge status-processing" style="width: fit-content;">Ready for dispatch</div>
             </div>
-            <div class="stat-card">
-                <h3>B2B Leads</h3>
+
+            <div class="card stat-card density-card">
+                <div class="flex-row justify-between" style="margin-bottom: 0.5rem;">
+                    <span class="stat-label">B2B LEADS</span>
+                    <i data-lucide="users" class="stat-icon"></i>
+                </div>
                 <p class="stat-value" id="b2b-leads">0</p>
-                <span class="stat-change">Sample Requests</span>
+                <div class="status-badge status-completed" style="width: fit-content;">Global Interest</div>
             </div>
-            <div class="stat-card">
-                <h3>Low Stock Alerts</h3>
+
+            <div class="card stat-card density-card">
+                <div class="flex-row justify-between" style="margin-bottom: 0.5rem;">
+                    <span class="stat-label">INVENTORY STATUS</span>
+                    <i data-lucide="alert-circle" class="stat-icon"></i>
+                </div>
                 <p class="stat-value" id="low-stock">0</p>
-                <span class="stat-change negative">Items below 10 units</span>
+                <div class="status-badge status-inactive" style="width: fit-content;">Critical Restock</div>
             </div>
         </div>
 
-        <!-- Charts Section -->
-        <div class="charts-container">
-            <div class="chart-card" style="grid-column: span 2;">
-                <h3 id="revenue-chart-title">Revenue Performance</h3>
-                <canvas id="revenueChart" style="max-height: 300px;"></canvas>
+        <!-- Main Dashboard Content (Standardized Heights) -->
+        <div class="dashboard-content-main">
+            <!-- Left Side: Analytics Charts -->
+            <div class="charts-container">
+                <div class="card chart-card animate-slide" style="animation-delay: 0.1s;">
+                    <div class="flex-row justify-between align-center" style="margin-bottom: 1rem;">
+                        <h3 id="revenue-chart-title">Revenue Growth Forecast</h3>
+                        <div class="badge-mini"><i data-lucide="trending-up" size="14"></i> Real-time</div>
+                    </div>
+                    <div class="chart-viewport-standard">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <div class="card chart-card animate-slide" style="animation-delay: 0.2s;">
+                        <h3>Order Fulfillment</h3>
+                        <div class="chart-viewport-mini">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card chart-card animate-slide" style="animation-delay: 0.3s;">
+                        <h3>Source Performance</h3>
+                        <div class="chart-viewport-mini">
+                            <canvas id="productsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="chart-card">
-                <h3>Order Status Breakdown</h3>
-                <canvas id="statusChart" style="max-height: 300px;"></canvas>
-            </div>
-            <div class="chart-card">
-                <h3>Top Selling Products (Preferred Orders)</h3>
-                <canvas id="productsChart" style="max-height: 300px;"></canvas>
-            </div>
+
+            <!-- Right Side: Live Activity Feed -->
+            <aside class="card activity-feed-card animate-fade" style="animation-delay: 0.4s;">
+                <div class="flex-row justify-between align-center" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
+                    <h3 style="font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+                        <i data-lucide="activity" class="accent-icon" size="18"></i>
+                        Live Ops Stream
+                    </h3>
+                    <div class="pulse-indicator"></div>
+                </div>
+                <div class="activity-list" id="activity-feed">
+                    <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Initializing stream...</p>
+                </div>
+            </aside>
         </div>
 
         <footer class="admin-footer">

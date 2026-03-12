@@ -20,56 +20,109 @@ async function loadAdminCatalog() {
 
         coffees.forEach(coffee => {
             const row = document.createElement('tr');
+            row.classList.add('animate-slide');
             
             const typeText = coffee.type === 'green_export' ? 'B2B Green' : 'B2C Roasted';
+            const imageUrl = coffee.image_url || '../assets/images/coffee-placeholder.png';
             
-            let stockInfo = '';
+            let marketInfo = '';
             if (coffee.type === 'green_export') {
-                stockInfo = `${coffee.available_bags || 0} Bags (60kg)`;
+                marketInfo = `
+                    <div class="market-spec">
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            <span class="badge-mini"><i data-lucide="globe" size="10"></i> ${coffee.region || 'Kenya'}</span>
+                            <span class="badge-mini"><i data-lucide="award" size="10"></i> ${coffee.grade || 'AA'}</span>
+                        </div>
+                        <span class="spec-value"><i data-lucide="package" size="12"></i> ${coffee.available_bags || 0} Sacks (60kg)</span>
+                    </div>
+                `;
             } else {
-                stockInfo = `KSh ${coffee.price_kes || 0} | ${coffee.retail_stock || 0} in stock`;
+                marketInfo = `
+                    <div class="market-spec">
+                        <span class="price-tag">KSh ${coffee.price_kes?.toLocaleString() || 0}</span>
+                        <span class="spec-value">${coffee.retail_stock || 0} Units in Stock</span>
+                        <span class="badge-mini">${coffee.roast_level} Roast</span>
+                    </div>
+                `;
             }
 
             const statusClass = coffee.is_active ? 'status-active' : 'status-inactive';
-            const statusText = coffee.is_active ? 'Active (Live)' : 'Hidden';
+            const statusText = coffee.is_active ? 'Live' : 'Hidden';
 
             row.innerHTML = `
-                <td><strong>${coffee.name}</strong></td>
-                <td>${typeText}</td>
-                <td>${stockInfo}</td>
+                <td>
+                    <div class="product-thumb-container" onclick="openLightbox('${imageUrl}')">
+                        <img src="${imageUrl}" alt="${coffee.name}" class="product-thumb">
+                        <div class="thumb-overlay"><i data-lucide="maximize-2"></i></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="product-info-cell">
+                        <span class="product-name">${coffee.name}</span>
+                        <span class="product-meta">${coffee.species || 'Arabica'} | ${coffee.process || 'Washed'}</span>
+                    </div>
+                </td>
+                <td><span class="type-badge">${typeText}</span></td>
+                <td>${marketInfo}</td>
                 <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                 <td>
-                    <button class="btn secondary-btn toggle-btn" data-id="${coffee.id}" data-active="${coffee.is_active}" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">
-                        ${coffee.is_active ? 'Hide' : 'Publish'}
-                    </button>
-                    <button class="btn danger-btn edit-btn" data-id="${coffee.id}" style="background: #333; padding: 0.4rem 0.8rem; font-size: 0.85rem;">Edit</button>
+                    <div class="action-buttons-group">
+                        <button class="action-btn toggle-btn ${coffee.is_active ? 'active' : ''}" data-id="${coffee.id}" data-active="${coffee.is_active}" title="${coffee.is_active ? 'Hide from Catalog' : 'Publish to Catalog'}">
+                            <i data-lucide="${coffee.is_active ? 'eye' : 'eye-off'}"></i>
+                        </button>
+                        <button class="action-btn edit-btn" data-id="${coffee.id}" title="Edit Coffee Specs">
+                            <i data-lucide="edit-3"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${coffee.id}" title="Delete Coffee" style="color: var(--danger);">
+                            <i data-lucide="trash-2"></i>
+                        </button>
+                    </div>
                 </td>
             `;
             tableBody.appendChild(row);
         });
 
-        // Attach event listeners to the newly created toggle buttons
-        document.querySelectorAll('.toggle-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = e.target.getAttribute('data-id');
-                const currentStatus = e.target.getAttribute('data-active') === 'true';
-                toggleProductStatus(id, currentStatus);
-            });
-        });
+        // Re-initialize icons
+        if (window.lucide) lucide.createIcons();
 
-        // Attach event listeners to edit buttons
-        document.querySelectorAll('.edit-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = e.target.getAttribute('data-id');
-                openEditModal(id);
-            });
-        });
+        // Attach event listeners...
+        setupTableListeners();
 
     } catch (error) {
         console.error('Error fetching admin catalog:', error);
-        tableBody.innerHTML = '<tr><td colspan="5">Failed to load data. Ensure Supabase is connected.</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 3rem; color: var(--danger);">Failed to synchronize catalog.</td></tr>';
     }
 }
+
+function setupTableListeners() {
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const btnEl = e.currentTarget;
+            const id = btnEl.getAttribute('data-id');
+            const currentStatus = btnEl.getAttribute('data-active') === 'true';
+            toggleProductStatus(id, currentStatus);
+        });
+    });
+
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            openEditModal(id);
+        });
+    });
+}
+
+// Lightbox Logic
+window.openLightbox = function(url) {
+    const lightbox = document.getElementById('image-lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = url;
+    lightbox.style.display = 'flex';
+};
+
+document.getElementById('close-lightbox').addEventListener('click', () => {
+    document.getElementById('image-lightbox').style.display = 'none';
+});
 
 // --- Helper: Open Edit Modal ---
 function openEditModal(id) {
@@ -79,14 +132,15 @@ function openEditModal(id) {
     // Set Form Mode
     productForm.setAttribute('data-mode', 'edit');
     productForm.setAttribute('data-id', id);
-    document.getElementById('modal-title').textContent = 'Edit Coffee';
-    document.getElementById('save-product-btn').textContent = 'Update Coffee';
-
     // Populate Common Fields
     document.getElementById('prod-type').value = product.type;
     document.getElementById('prod-name').value = product.name;
     document.getElementById('prod-desc').value = product.description || '';
     
+    // Set Image Preview
+    const previewImg = document.getElementById('modal-img-preview');
+    previewImg.src = product.image_url || '../assets/images/coffee-placeholder.png';
+
     // Trigger change to show correct section
     const typeEvent = new Event('change');
     document.getElementById('prod-type').dispatchEvent(typeEvent);
@@ -109,9 +163,26 @@ function openEditModal(id) {
     modal.style.display = 'flex';
 }
 
-// --- 2. Add New Product Logic (With File Upload & New UI Fields) ---
+// Ensure global variables are defined
 const productForm = document.getElementById('product-form');
 const modal = document.getElementById('product-modal');
+
+// Live Image Preview Logic
+document.getElementById('prod-image-file').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            document.getElementById('modal-img-preview').src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Click to trigger hidden file input
+document.getElementById('image-preview-zone').addEventListener('click', () => {
+    document.getElementById('prod-image-file').click();
+});
 
 productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -253,6 +324,9 @@ document.getElementById('add-product-btn').addEventListener('click', () => {
     // Reset visibility to default
     document.getElementById('prod-type').value = 'roasted_retail';
     document.getElementById('prod-type').dispatchEvent(new Event('change'));
+    
+    // Reset preview
+    document.getElementById('modal-img-preview').src = 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=800&auto=format&fit=crop';
     
     modal.style.display = 'flex';
 });

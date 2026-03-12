@@ -90,19 +90,41 @@ function renderRequests() {
             // Build the row
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td><small style="color:#666;">${dateFormatted}</small></td>
                 <td>
-                    <strong>${companyName}</strong><br>
-                    <small>👤 ${contactName}</small><br>
-                    <small>✉️ <a href="mailto:${email}" style="color: var(--gold); text-decoration: none;">${email}</a></small>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 700;">${dateFormatted}</span>
+                        <span style="font-size: 0.75rem; color: var(--text-muted);">Lead Generated</span>
+                    </div>
                 </td>
-                <td><strong>${coffeeName}</strong>${notes}</td>
                 <td>
-                    <strong>${courier}</strong><br>
-                    <span class="data-highlight" style="font-family: monospace; letter-spacing: 1px;">Acct: ${accountNo}</span>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-weight: 700; color: var(--text-dark);">${companyName}</span>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);"><i style="font-style: normal; opacity: 0.6;">👤</i> ${contactName}</span>
+                        <span style="font-size: 0.85rem; color: var(--text-muted);"><i style="font-style: normal; opacity: 0.6;">✉️</i> <a href="mailto:${email}" style="color: var(--accent); text-decoration: none;">${email}</a></span>
+                    </div>
                 </td>
-                <td><span class="status-badge ${statusClass}" style="text-transform: capitalize;">${currentStatus}</span></td>
-                <td>${actionBtnHTML}</td>
+                <td>
+                    <div style="max-width: 250px;">
+                        <span style="font-weight: 600; color: var(--text-dark);">${coffeeName}</span>
+                        ${notes}
+                    </div>
+                </td>
+                <td>
+                    <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                        <span style="font-weight: 700; color: var(--text-dark);">${courier}</span>
+                        <span class="status-badge" style="background: rgba(15, 23, 42, 0.05); color: var(--text-dark); font-family: monospace; font-size: 0.7rem; width: fit-content;">ID: ${accountNo}</span>
+                    </div>
+                </td>
+                <td><span class="status-badge ${statusClass}">${currentStatus}</span></td>
+                <td>
+                    <div class="flex-row">
+                        ${actionBtnHTML}
+                        ${currentStatus === 'completed' ? `
+                        <button class="btn secondary-btn" style="padding: 0.5rem; opacity: 0.5; pointer-events: none;">
+                            ✅
+                        </button>` : ''}
+                    </div>
+                </td>
             `;
             tableBody.appendChild(row);
         });
