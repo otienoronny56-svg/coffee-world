@@ -19,11 +19,10 @@
             <h2>Admin Portal</h2>
         </div>
         <ul class="sidebar-nav">
-            <li><a href="index.html"><i data-lucide="bar-chart-3"></i> Financial HQ</a></li>
-            <li><a href="catalog.html" class="active"><i data-lucide="package"></i> Catalog Management</a></li>
-            <li><a href="b2c-orders.html"><i data-lucide="shopping-cart"></i> B2C Orders</a></li>
-            <li><a href="b2b-samples.html"><i data-lucide="globe"></i> B2B Sample Requests</a></li>
-            <li><a href="events.html"><i data-lucide="calendar"></i> Event Manager</a></li>
+            <li><a href="catalog.html" class="active" id="nav-catalog"><i data-lucide="package"></i> Catalog Management</a></li>
+            <li><a href="b2b-samples.html" id="nav-samples"><i data-lucide="globe"></i> B2B Sample Requests</a></li>
+            <li><a href="events.html" id="nav-events"><i data-lucide="calendar"></i> Event Manager</a></li>
+            <li><hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 1rem 0;"></li>
             <li><a href="#" id="logout-btn" style="color: #ef4444;"><i data-lucide="log-out"></i> Logout</a></li>
             <li><a href="../index.html" target="_blank"><i data-lucide="external-link"></i> Live Site</a></li>
         </ul>
@@ -85,11 +84,10 @@
             <form id="product-form">
                 <div class="product-form-grid">
                     <div class="form-main-fields">
-                        <div class="form-group">
+                        <div class="form-group" style="display: none;">
                             <label>Target Market (Catalog)</label>
                             <select id="prod-type" required>
-                                <option value="roasted_retail">B2C - Local Retail (Roasted)</option>
-                                <option value="green_export">B2B - Global Export (Green)</option>
+                                <option value="green_export" selected>B2B - Global Export (Green)</option>
                             </select>
                         </div>
                         
@@ -120,36 +118,9 @@
 
                 <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid #eee;">
 
-                <div id="b2c-fields">
-                    <h3 class="admin-section-title">B2C Retail Details</h3>
-                    <div class="form-row">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Retail Stock (Bags)</label>
-                            <input type="number" id="prod-retail-stock" placeholder="e.g., 50">
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Roast Level</label>
-                            <select id="prod-roast">
-                                <option value="Light">Light Roast</option>
-                                <option value="Medium">Medium Roast</option>
-                                <option value="Dark">Dark Roast</option>
-                                <option value="Espresso">Espresso Roast</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group" style="flex: 1;">
-                            <label>Original Price (KSh) <small>Optional</small></label>
-                            <input type="number" id="prod-original-price" placeholder="e.g., 1800">
-                        </div>
-                        <div class="form-group" style="flex: 1;">
-                            <label>Current Offer Price (KSh) *</label>
-                            <input type="number" id="prod-current-price" placeholder="e.g., 1500">
-                        </div>
-                    </div>
-                </div>
+                <!-- B2C Section Removed -->
 
-                <div id="b2b-fields" class="admin-section-box" style="display: none;">
+                <div id="b2b-fields" class="admin-section-box">
                     <h3 class="admin-section-title">B2B Export Details</h3>
                     
                     <div class="form-row">
@@ -158,7 +129,6 @@
                             <select id="prod-species">
                                 <option value="Arabica">Arabica</option>
                                 <option value="Robusta">Robusta</option>
-                                <option value="Other">Other</option>
                             </select>
                         </div>
                         <div class="form-group" style="flex: 1;">
@@ -169,7 +139,6 @@
                                 <option value="Rwanda">Rwanda</option>
                                 <option value="Tanzania">Tanzania</option>
                                 <option value="DRC Congo">DRC Congo</option>
-                                <option value="Other">Other</option>
                             </select>
                         </div>
                     </div>
