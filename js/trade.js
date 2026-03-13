@@ -87,7 +87,6 @@ document.addEventListener('click', (e) => {
             document.getElementById('view-desc').textContent = coffee.description || 'No tasting notes provided for this lot.';
             document.getElementById('view-grade').textContent = coffee.grade || 'AA';
             document.getElementById('view-score').textContent = coffee.cupping_score || 'Pending';
-            document.getElementById('view-stock').textContent = coffee.available_bags ? `${coffee.available_bags} Sacks` : '0 Sacks';
             
             // Pass the ID and Name to the modal's "Request Sample" button so it seamlessly links to the Sample Modal
             const viewToSampleBtn = document.getElementById('view-to-sample-btn');
