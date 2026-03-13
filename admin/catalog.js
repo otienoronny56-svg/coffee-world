@@ -27,18 +27,51 @@ async function loadAdminCatalog() {
             
             let marketInfo = '';
             if (coffee.type === 'green_export') {
-                marketInfo = `
-                    <div class="market-spec">
-                        <div class="spec-badges">
-                            <span class="badge-mini"><i data-lucide="globe"></i> ${coffee.region || 'Kenya'}</span>
-                            <span class="badge-mini"><i data-lucide="award"></i> ${coffee.grade || 'AA'}</span>
-                        </div>
-                        <div class="spec-value main-spec">
-                            <i data-lucide="package"></i>
-                            <span><strong>${coffee.available_bags || 0}</strong> Sacks (60kg)</span>
-                        </div>
+                row.innerHTML = `
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; font-weight: 600;">
+                        <i data-lucide="map-pin" size="14" style="color: var(--accent);"></i>
+                        ${coffee.region || 'Kenya'}
                     </div>
-                `;
+                </td>
+                <td>
+                    <span class="badge-mini" style="background: var(--accent-hover); color: white; border: none; padding: 4px 10px;">
+                        ${coffee.grade || 'AA'}
+                    </span>
+                </td>
+                <td>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 600; color: var(--text-dark);">${coffee.species || 'Arabica'}</span>
+                        <small style="color: var(--text-muted); text-transform: uppercase; font-size: 0.75rem;">${coffee.process || 'Washed'}</small>
+                    </div>
+                </td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--gold); font-weight: 700;">
+                        <i data-lucide="star" size="14"></i>
+                        ${coffee.cupping_score ? coffee.cupping_score.toFixed(2) : 'N/A'}
+                    </div>
+                </td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i data-lucide="package" size="14" style="color: var(--text-muted);"></i>
+                        <span><strong>${coffee.available_bags || 0}</strong> Sacks (60kg)</span>
+                    </div>
+                </td>
+                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                <td>
+                    <div class="action-buttons-group">
+                        <button class="action-btn toggle-btn ${coffee.is_active ? 'active' : ''}" data-id="${coffee.id}" data-active="${coffee.is_active}" title="${coffee.is_active ? 'Hide from Catalog' : 'Publish to Catalog'}">
+                            <i data-lucide="${coffee.is_active ? 'eye' : 'eye-off'}"></i>
+                        </button>
+                        <button class="action-btn edit-btn" data-id="${coffee.id}" title="Edit Coffee Specs">
+                            <i data-lucide="edit-3"></i>
+                        </button>
+                        <button class="action-btn delete-btn" data-id="${coffee.id}" title="Delete Coffee" style="color: var(--danger);">
+                            <i data-lucide="trash-2"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
             } else {
                 marketInfo = `
                     <div class="market-spec">
