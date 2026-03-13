@@ -59,34 +59,22 @@ async function loadAdminCatalog() {
 
             row.innerHTML = `
                 <td>
-                    <div class="product-thumb-container" onclick="openLightbox('${imageUrl}')">
-                        <img src="${imageUrl}" alt="${coffee.name}" class="product-thumb">
-                        <div class="thumb-overlay"><i data-lucide="maximize-2"></i></div>
-                    </div>
-                </td>
-                <td>
                     <div class="product-info-cell">
                         <span class="product-name">${coffee.name}</span>
                         <span class="product-meta">${coffee.species || 'Arabica'} | ${coffee.process || 'Washed'}</span>
                     </div>
                 </td>
-                <td><span class="type-badge">${typeText}</span></td>
-                <td>${marketInfo}</td>
-                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                <td>
-                    <div class="action-buttons-group">
-                        <button class="action-btn toggle-btn ${coffee.is_active ? 'active' : ''}" data-id="${coffee.id}" data-active="${coffee.is_active}" title="${coffee.is_active ? 'Hide from Catalog' : 'Publish to Catalog'}">
-                            <i data-lucide="${coffee.is_active ? 'eye' : 'eye-off'}"></i>
-                        </button>
-                        <button class="action-btn edit-btn" data-id="${coffee.id}" title="Edit Coffee Specs">
-                            <i data-lucide="edit-3"></i>
-                        </button>
-                        <button class="action-btn delete-btn" data-id="${coffee.id}" title="Delete Coffee" style="color: var(--danger);">
-                            <i data-lucide="trash-2"></i>
-                        </button>
-                    </div>
-                </td>
-            `;
+                    ${marketInfo}
+                </div>
+            </td>
+            <td>
+                <span class="status-badge ${statusClass}">${statusText}</span>
+            </td>
+            <td class="admin-actions">
+                <button class="btn-icon edit-btn" data-id="${coffee.id}" title="Edit Specs"><i data-lucide="edit-3"></i></button>
+                <button class="btn-icon delete-btn" data-id="${coffee.id}" title="Delete"><i data-lucide="trash-2"></i></button>
+            </td>
+        `;
             tableBody.appendChild(row);
         });
 
@@ -146,17 +134,7 @@ async function deleteProduct(id) {
     }
 }
 
-// Lightbox Logic
-window.openLightbox = function(url) {
-    const lightbox = document.getElementById('image-lightbox');
-    const img = document.getElementById('lightbox-img');
-    img.src = url;
-    lightbox.style.display = 'flex';
-};
-
-document.getElementById('close-lightbox').addEventListener('click', () => {
-    document.getElementById('image-lightbox').style.display = 'none';
-});
+// Lightbox Removed
 
 // --- Helper: Open Edit Modal ---
 function openEditModal(id) {
@@ -168,12 +146,8 @@ function openEditModal(id) {
     productForm.setAttribute('data-id', id);
     // Populate Common Fields
     document.getElementById('prod-type').value = product.type;
-    document.getElementById('prod-name').value = product.name;
+    document.getElementById('prod-name').value = product.name || 'Green Coffee Lot';
     document.getElementById('prod-desc').value = product.description || '';
-    
-    // Set Image Preview
-    const previewImg = document.getElementById('modal-img-preview');
-    previewImg.src = product.image_url || '../assets/images/coffee-placeholder.png';
 
     // Trigger change to show correct section
     const typeEvent = new Event('change');
@@ -203,22 +177,7 @@ function openEditModal(id) {
 const productForm = document.getElementById('product-form');
 const modal = document.getElementById('product-modal');
 
-// Live Image Preview Logic
-document.getElementById('prod-image-file').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            document.getElementById('modal-img-preview').src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-});
-
-// Click to trigger hidden file input
-document.getElementById('image-preview-zone').addEventListener('click', () => {
-    document.getElementById('prod-image-file').click();
-});
+// Visual Preview Logic Removed
 
 productForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -231,39 +190,8 @@ productForm.addEventListener('submit', async (e) => {
     submitBtn.disabled = true;
 
     try {
-        // 1. Handle the Image Upload First
-        let imageUrl = null;
-        const imageFileInput = document.getElementById('prod-image-file');
-        
-        if (imageFileInput.files.length > 0) {
-            const file = imageFileInput.files[0];
-            
-            // Create a unique filename: timestamp + random string + original extension
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-            const filePath = `coffees/${fileName}`;
-
-            // Upload the file to the 'product-images' bucket
-            const { error: uploadError } = await supabase.storage
-                .from('product-images')
-                .upload(filePath, file);
-
-            if (uploadError) throw uploadError;
-
-            // Get the public URL of the newly uploaded image
-            const { data: publicUrlData } = supabase.storage
-                .from('product-images')
-                .getPublicUrl(filePath);
-                
-            imageUrl = publicUrlData.publicUrl;
-        } else if (mode === 'edit') {
-            // If editing and no new file, keep existing image
-            const existingProduct = allAdminProducts.find(p => p.id == editId);
-            imageUrl = existingProduct.image_url;
-        } else {
-            // Default for new products if no image uploaded
-            imageUrl = 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=800&auto=format&fit=crop';
-        }
+        // Image Handling Removed
+        let imageUrl = mode === 'edit' ? allAdminProducts.find(p => p.id == editId).image_url : 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=800&auto=format&fit=crop';
 
         // 2. Gather the rest of the form data
         const type = document.getElementById('prod-type').value;
@@ -358,11 +286,8 @@ document.getElementById('add-product-btn').addEventListener('click', () => {
     document.getElementById('save-product-btn').textContent = 'Save Coffee to Catalog';
     
     // Reset visibility to default
-    document.getElementById('prod-type').value = 'roasted_retail';
+    document.getElementById('prod-type').value = 'green_export';
     document.getElementById('prod-type').dispatchEvent(new Event('change'));
-    
-    // Reset preview
-    document.getElementById('modal-img-preview').src = 'https://images.unsplash.com/photo-1559056199-641a0ac8b55e?q=80&w=800&auto=format&fit=crop';
     
     modal.style.display = 'flex';
 });
