@@ -87,8 +87,6 @@ async function loadAdminCatalog() {
 
             tableBody.appendChild(row);
         });
-            tableBody.appendChild(row);
-        });
 
         // Re-initialize icons
         if (window.lucide) lucide.createIcons();
