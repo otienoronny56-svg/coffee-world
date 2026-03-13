@@ -29,19 +29,27 @@ async function loadAdminCatalog() {
             if (coffee.type === 'green_export') {
                 marketInfo = `
                     <div class="market-spec">
-                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
-                            <span class="badge-mini"><i data-lucide="globe" size="10"></i> ${coffee.region || 'Kenya'}</span>
-                            <span class="badge-mini"><i data-lucide="award" size="10"></i> ${coffee.grade || 'AA'}</span>
+                        <div class="spec-badges">
+                            <span class="badge-mini"><i data-lucide="globe"></i> ${coffee.region || 'Kenya'}</span>
+                            <span class="badge-mini"><i data-lucide="award"></i> ${coffee.grade || 'AA'}</span>
                         </div>
-                        <span class="spec-value"><i data-lucide="package" size="12"></i> ${coffee.available_bags || 0} Sacks (60kg)</span>
+                        <div class="spec-value main-spec">
+                            <i data-lucide="package"></i>
+                            <span><strong>${coffee.available_bags || 0}</strong> Sacks (60kg)</span>
+                        </div>
                     </div>
                 `;
             } else {
                 marketInfo = `
                     <div class="market-spec">
-                        <span class="price-tag">KSh ${coffee.price_kes?.toLocaleString() || 0}</span>
-                        <span class="spec-value">${coffee.retail_stock || 0} Units in Stock</span>
-                        <span class="badge-mini">${coffee.roast_level} Roast</span>
+                        <div class="price-row">
+                            <span class="price-tag">KSh ${coffee.price_kes?.toLocaleString() || 0}</span>
+                            <span class="badge-mini secondary">${coffee.roast_level} Roast</span>
+                        </div>
+                        <div class="spec-value">
+                            <i data-lucide="layers"></i>
+                            <span><strong>${coffee.retail_stock || 0}</strong> Units available</span>
+                        </div>
                     </div>
                 `;
             }
@@ -110,6 +118,32 @@ function setupTableListeners() {
             openEditModal(id);
         });
     });
+
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = e.currentTarget.getAttribute('data-id');
+            if (confirm('Are you sure you want to delete this coffee from the catalog? This action cannot be undone.')) {
+                deleteProduct(id);
+            }
+        });
+    });
+}
+
+// --- 3. Delete Product ---
+async function deleteProduct(id) {
+    try {
+        const { error } = await supabase
+            .from('products')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+        
+        loadAdminCatalog(); // Refresh table
+    } catch (error) {
+        console.error('Delete Error:', error);
+        alert('Failed to delete product: ' + error.message);
+    }
 }
 
 // Lightbox Logic
@@ -160,6 +194,8 @@ function openEditModal(id) {
         document.getElementById('prod-current-price').value = product.price_kes || '';
     }
 
+    document.getElementById('modal-title').textContent = 'Edit Coffee Specs';
+    document.getElementById('save-product-btn').textContent = 'Update Coffee';
     modal.style.display = 'flex';
 }
 

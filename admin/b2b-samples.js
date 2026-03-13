@@ -166,6 +166,10 @@ document.getElementById('status-filter').addEventListener('change', renderReques
 // Load initially
 document.addEventListener('DOMContentLoaded', () => {
     loadSampleRequests();
+    
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
 
     // Theme Toggle Logic
     const themeBtn = document.getElementById('theme-toggle');

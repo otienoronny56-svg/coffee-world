@@ -56,12 +56,9 @@ function renderTable(dataArray) {
         row.innerHTML = `
             <td>
                 <div class="coffee-cell">
-                    <img src="${imageUrl}" alt="${coffee.name}" class="table-thumb">
-                    <div>
-                        <strong style="font-size: 1.3rem; color: var(--gold); display: block; margin-bottom: 6px;">${coffee.name}</strong>
-                        <div style="font-size: 0.9rem; color: #e0e0e0; line-height: 1.5; max-width: 280px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                            ${coffee.description || ''}
-                        </div>
+                    <strong style="font-size: 1.2rem; color: var(--gold);">${coffee.name}</strong>
+                    <div style="font-size: 0.85rem; color: #e0e0e0; line-height: 1.4;">
+                        ${coffee.description || ''}
                     </div>
                 </div>
             </td>

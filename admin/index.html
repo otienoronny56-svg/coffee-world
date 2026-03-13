@@ -128,20 +128,32 @@
                 </div>
             </div>
 
-            <!-- Right Side: Live Activity Feed -->
-            <aside class="card activity-feed-card animate-fade" style="animation-delay: 0.4s;">
-                <div class="flex-row justify-between align-center" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
-                    <h3 style="font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem;">
+        </div>
+
+        <!-- Full-Width Live Activity Feed at the Bottom -->
+        <aside class="card activity-feed-card animate-fade" style="animation-delay: 0.4s; margin-top: 1rem;">
+            <div class="flex-row justify-between align-center" style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; flex-wrap: wrap; gap: 1rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <h3 style="font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; margin: 0;">
                         <i data-lucide="activity" class="accent-icon" size="18"></i>
                         Live Ops Stream
                     </h3>
                     <div class="pulse-indicator"></div>
                 </div>
-                <div class="activity-list" id="activity-feed">
-                    <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Initializing stream...</p>
+                
+                <div style="display: flex; gap: 0.5rem; flex: 1; justify-content: flex-end; min-width: 300px;">
+                    <input type="text" id="activity-search" placeholder="Filter activity..." class="form-group" style="margin-bottom: 0; padding: 0.4rem 0.75rem; font-size: 0.85rem; width: 100%; max-width: 200px;">
+                    <select id="activity-type-filter" class="form-group" style="margin-bottom: 0; padding: 0.4rem 0.75rem; font-size: 0.85rem; width: auto;">
+                        <option value="all">All Activity</option>
+                        <option value="order">Retail Orders</option>
+                        <option value="lead">B2B Leads</option>
+                    </select>
                 </div>
-            </aside>
-        </div>
+            </div>
+            <div class="activity-list" id="activity-feed">
+                <p style="color: var(--text-muted); text-align: center; padding: 2rem;">Initializing stream...</p>
+            </div>
+        </aside>
 
         <footer class="admin-footer">
             <p>Engineered by Systems by Ronny <a href="tel:0745806488">(0745806488)</a></p>

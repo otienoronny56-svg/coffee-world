@@ -83,6 +83,10 @@ async function updateEventStatus(id, newStatus) {
 // Init
 document.addEventListener('DOMContentLoaded', () => {
     loadEvents();
+    
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
 
     // Theme Toggle Logic
     const themeBtn = document.getElementById('theme-toggle');

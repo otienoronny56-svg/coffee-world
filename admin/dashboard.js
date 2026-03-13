@@ -135,21 +135,37 @@ async function loadDashboard(filterType = 'all', customStart = null, customEnd =
     }
 }
 
-function loadLiveFeed(orders, b2bLeads) {
-    const feedEl = document.getElementById('activity-feed');
-    feedEl.innerHTML = '';
+// Store activities globally for local filtering
+let allActivities = [];
 
-    const activities = [
+function loadLiveFeed(orders, b2bLeads) {
+    allActivities = [
         ...orders.map(o => ({ type: 'order', date: new Date(o.created_at), title: 'Retail Order', desc: `KSh ${o.total_amount_kes.toLocaleString()} - ${o.customer_name}`, status: o.status })),
         ...b2bLeads.map(l => ({ type: 'lead', date: new Date(l.created_at), title: 'B2B Sample', desc: `${l.coffee_name} - ${l.company_name}`, status: 'lead' }))
-    ].sort((a,b) => b.date - a.date).slice(0, 10);
+    ].sort((a,b) => b.date - a.date);
 
-    if (activities.length === 0) {
-        feedEl.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">No recent activity.</p>';
+    filterLiveFeed();
+}
+
+function filterLiveFeed() {
+    const feedEl = document.getElementById('activity-feed');
+    const searchTerm = document.getElementById('activity-search')?.value.toLowerCase() || '';
+    const typeFilter = document.getElementById('activity-type-filter')?.value || 'all';
+
+    const filtered = allActivities.filter(act => {
+        const matchesSearch = act.title.toLowerCase().includes(searchTerm) || act.desc.toLowerCase().includes(searchTerm);
+        const matchesType = typeFilter === 'all' || act.type === typeFilter;
+        return matchesSearch && matchesType;
+    }).slice(0, 20); // Show more since it's now full width
+
+    feedEl.innerHTML = '';
+
+    if (filtered.length === 0) {
+        feedEl.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 2rem;">No matching activity found.</p>`;
         return;
     }
 
-    activities.forEach(act => {
+    filtered.forEach(act => {
         const item = document.createElement('div');
         item.className = 'activity-item';
         
@@ -172,10 +188,7 @@ function loadLiveFeed(orders, b2bLeads) {
         feedEl.appendChild(item);
     });
 
-    // Re-run lucide for the new items
-    if (window.lucide) {
-        window.lucide.createIcons();
-    }
+    if (window.lucide) window.lucide.createIcons();
 }
 
 function renderRevenueChart(dataObj, granularity) {
@@ -323,4 +336,8 @@ document.addEventListener('DOMContentLoaded', () => {
         alert("Exporting current view to CSV...");
         // Reuse export logic if needed
     });
-});
+
+    // Activity Feed Search & Filter
+    document.getElementById('activity-search')?.addEventListener('input', filterLiveFeed);
+    document.getElementById('activity-type-filter')?.addEventListener('change', filterLiveFeed);
+});

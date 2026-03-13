@@ -36,6 +36,8 @@
 body.admin-layout {
     display: flex;
     height: 100vh;
+    width: 100vw;
+    overflow: hidden; /* Body doesn't scroll, children do */
     background-color: var(--admin-bg);
     color: var(--text-dark);
     visibility: hidden;
@@ -91,12 +93,14 @@ body.admin-layout {
 /* Main Content Area */
 .admin-main {
     flex: 1;
+    height: 100vh;
     overflow-y: auto;
-    overflow-x: hidden; /* Prevent horizontal scroll */
-    padding: 1.5rem; /* Reduced from 2rem */
+    overflow-x: hidden;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* Reduced from 2rem */
+    gap: 1.5rem;
+    min-height: 0; /* Important for flex children scrolling */
 }
 
 .admin-header {
@@ -139,11 +143,15 @@ body.admin-layout {
 .stat-card .stat-value { font-size: 1.875rem; font-weight: 700; color: var(--text-dark); }
 .stat-card .stat-label { font-size: 0.875rem; color: var(--text-muted); }
 
-/* Dashboard Layout with Live Feed */
+/* Dashboard Layout */
 .dashboard-content-main {
-    display: grid;
-    grid-template-columns: 1fr 300px; /* Reduced from 320px */
-    gap: 1rem; /* Reduced from 1.25rem */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.activity-feed-card {
+    width: 100%;
 }
 
 @media (max-width: 1200px) {
@@ -204,8 +212,10 @@ body.admin-layout {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    overflow: hidden;
+    overflow-x: auto; /* Allow horizontal scroll for narrow screens */
+    overflow-y: visible; /* Let the parent admin-main handle vertical scroll */
     box-shadow: var(--shadow-sm);
+    flex-shrink: 0; /* Prevent the table from being squished */
 }
 
 .admin-table { width: 100%; border-collapse: collapse; }
@@ -307,6 +317,8 @@ body.admin-layout {
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 2rem;
+    overflow-y: auto; /* Allow scrolling on the overlay for small screens */
 }
 
 .admin-modal {
@@ -317,6 +329,9 @@ body.admin-layout {
     width: 100%;
     max-width: 600px;
     border: 1px solid var(--border);
+    max-height: calc(100vh - 4rem); /* Ensure it doesn't exceed viewport */
+    overflow-y: auto; /* Internal scrolling if needed */
+    margin: auto; /* Important for flex centering with overflow */
 }
 
 /* Utils */
@@ -588,31 +603,73 @@ body.admin-layout {
     display: inline-block;
 }
 
-.market-spec { display: flex; flex-direction: column; gap: 6px; }
+.market-spec { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 0.5rem; 
+}
+
+.spec-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.price-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
 .price-tag { 
     font-weight: 800; 
     color: var(--text-dark); 
-    font-size: 1rem; 
-    font-family: 'Inter', sans-serif;
+    font-size: 1.125rem; 
+    letter-spacing: -0.025em;
 }
+
 .spec-value { 
-    font-size: 0.75rem; 
-    font-weight: 600; 
+    font-size: 0.8125rem; 
+    font-weight: 500; 
     color: var(--text-muted); 
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 0.5rem;
 }
-.badge-mini {
-    font-size: 0.7rem;
-    font-weight: 600;
-    background: #f1f5f9;
-    padding: 2px 8px;
-    border-radius: 4px;
+
+.spec-value i {
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+}
+
+.spec-value strong {
     color: var(--text-dark);
+    font-weight: 700;
+}
+
+.badge-mini {
+    padding: 0.25rem 0.625rem;
+    background: #f1f5f9;
+    color: var(--text-dark);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 0.25rem;
+    border: 1px solid var(--border);
+}
+
+.badge-mini i {
+    width: 12px;
+    height: 12px;
+}
+
+.badge-mini.secondary {
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-color: transparent;
 }
 
 .action-buttons-group { display: flex; gap: 0.5rem; justify-content: center; }

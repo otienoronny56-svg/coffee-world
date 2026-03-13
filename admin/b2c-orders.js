@@ -20,19 +20,34 @@ async function loadOrders() {
         if (error) throw error;
         allOrders = orders; // Store in global variable
 
-        // --- ROBUST FALLBACK: Fetch items manually to ensure summary always shows ---
-        // 1. Get all Order IDs
-        const orderIds = allOrders.map(o => o.id);
-        
-        // 2. Fetch all items for these orders
-        const { data: itemsData } = await supabase.from('b2c_order_items').select('*').in('order_id', orderIds);
-        allOrderItems = itemsData || [];
-        
-        // 3. Fetch product names for these items
-        const productIds = allOrderItems.map(i => i.product_id);
-        const { data: productsData } = await supabase.from('products').select('id, name').in('id', productIds);
-        allProducts = productsData || [];
-        // --------------------------------------------------------------------------
+        if (allOrders.length > 0) {
+            // 1. Get all Order IDs
+            const orderIds = allOrders.map(o => o.id);
+            
+            // 2. Fetch all items for these orders (only if IDs exist)
+            try {
+                const { data: itemsData, error: itemsError } = await supabase
+                    .from('b2c_order_items')
+                    .select('*')
+                    .in('order_id', orderIds);
+                
+                if (!itemsError) {
+                    allOrderItems = itemsData || [];
+                    
+                    // 3. Fetch product names for these items
+                    const productIds = [...new Set(allOrderItems.map(i => i.product_id))];
+                    if (productIds.length > 0) {
+                        const { data: productsData } = await supabase
+                            .from('products')
+                            .select('id, name')
+                            .in('id', productIds);
+                        allProducts = productsData || [];
+                    }
+                }
+            } catch (err) {
+                console.warn('Could not fetch order items:', err);
+            }
+        }
 
         renderOrders();
 
@@ -328,6 +343,10 @@ document.getElementById('refresh-orders-btn').addEventListener('click', loadOrde
 // Load initially
 document.addEventListener('DOMContentLoaded', () => {
     loadOrders();
+    
+    if (window.lucide) {
+        window.lucide.createIcons();
+    }
     
     // Theme Toggle Logic
     const themeBtn = document.getElementById('theme-toggle');

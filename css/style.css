@@ -294,7 +294,7 @@ body {
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    min-width: 1100px; /* Forces horizontal scroll on smaller screens */
+    /* Removed min-width to prevent horizontal scroll */
 }
 
 .offer-table th, .offer-table td {
@@ -1985,12 +1985,12 @@ body {
 /* ========================================= */
 
 .trade-layout-container {
-    max-width: 1300px;
+    max-width: 1400px; /* Standardized to use more space */
     margin: 4rem auto;
     padding: 0 2rem;
     display: grid;
-    grid-template-columns: 280px 1fr; /* Left sidebar, Right table */
-    gap: 3rem;
+    grid-template-columns: 240px 1fr; /* Slightly narrower sidebar */
+    gap: 2rem;
 }
 
 /* Filter Sidebar */
@@ -2143,7 +2143,9 @@ body {
 
 .action-cell {
     display: flex;
-    gap: 0.5rem; /* Space between View and Sample buttons */
+    gap: 0.5rem;
+    min-width: 160px;
+    justify-content: flex-start;
 }
 /* ========================================= */
 /* B2B TABLE FIXES                           */
@@ -2151,31 +2153,152 @@ body {
 
 .coffee-cell {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    min-width: 450px; /* Increased width to fit bigger image + description */
+    flex-direction: column; /* Stack name and desc to save horizontal space */
+    gap: 0.25rem;
+    max-width: 400px;
 }
 
 .table-thumb {
-    width: 160px !important; 
-    height: 160px !important;
-    min-width: 160px !important; /* Prevents it from squishing */
-    object-fit: cover !important; /* Crops it neatly into a square */
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    display: none; /* Already removed from JS, making sure CSS doesn't force space */
 }
 
 .action-cell {
     display: flex;
-    flex-direction: column; /* Stack buttons for better alignment with big image */
+    flex-direction: row; /* Restored to row */
     gap: 0.5rem;
-    min-width: 140px;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .action-cell .btn {
     padding: 0.5rem 1rem !important;
     font-size: 0.85rem !important;
+    white-space: nowrap;
+}
+
+/* Origins Section */
+.home-origins {
+    padding: 8rem 0;
+    background: linear-gradient(to bottom, var(--primary-green), #05120c);
+}
+
+.origins-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.origins-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.origin-card {
+    background: var(--panel-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.origin-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+.origin-image {
+    position: relative;
+    height: 240px;
+    overflow: hidden;
+}
+
+.origin-image img {
     width: 100%;
-    text-align: center;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.origin-card:hover .origin-image img {
+    transform: scale(1.1);
+}
+
+.origin-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.5rem 1rem;
+    background: linear-gradient(to top, rgba(11, 35, 24, 0.95), transparent);
+    color: var(--white);
+}
+
+.origin-overlay h3 {
+    font-family: var(--font-heading);
+    color: var(--gold);
+    font-size: 1.8rem;
+    margin-bottom: 0.2rem;
+}
+
+.origin-region {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #ccc;
+    font-weight: 500;
+}
+
+.origin-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.origin-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-badge {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    color: #e0e0e0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.stat-badge span {
+    font-size: 0.9rem;
+}
+
+.origin-profile {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #ccc;
+    margin-top: auto;
+}
+
+.origin-profile strong {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .home-origins {
+        padding: 4rem 0;
+    }
+    .origin-image {
+        height: 200px;
+    }
 }
