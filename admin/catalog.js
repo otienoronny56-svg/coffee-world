@@ -22,10 +22,9 @@ async function loadAdminCatalog() {
             const row = document.createElement('tr');
             row.classList.add('animate-slide');
             
-            const typeText = coffee.type === 'green_export' ? 'B2B Green' : 'B2C Roasted';
-            const imageUrl = coffee.image_url || '../assets/images/coffee-placeholder.png';
+            const statusClass = coffee.is_active ? 'status-active' : 'status-inactive';
+            const statusText = coffee.is_active ? 'Live' : 'Hidden';
             
-            let marketInfo = '';
             if (coffee.type === 'green_export') {
                 row.innerHTML = `
                 <td>
@@ -73,41 +72,21 @@ async function loadAdminCatalog() {
                 </td>
             `;
             } else {
-                marketInfo = `
-                    <div class="market-spec">
-                        <div class="price-row">
-                            <span class="price-tag">KSh ${coffee.price_kes?.toLocaleString() || 0}</span>
-                            <span class="badge-mini secondary">${coffee.roast_level} Roast</span>
+                // Fallback for legacy B2C or other types
+                row.innerHTML = `
+                    <td colspan="5" style="color: var(--text-muted); font-style: italic;">Non-B2B Entry: ${coffee.name}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <div class="action-buttons-group">
+                            <button class="action-btn edit-btn" data-id="${coffee.id}"><i data-lucide="edit-3"></i></button>
+                            <button class="action-btn delete-btn" data-id="${coffee.id}"><i data-lucide="trash-2"></i></button>
                         </div>
-                        <div class="spec-value">
-                            <i data-lucide="layers"></i>
-                            <span><strong>${coffee.retail_stock || 0}</strong> Units available</span>
-                        </div>
-                    </div>
+                    </td>
                 `;
             }
 
-            const statusClass = coffee.is_active ? 'status-active' : 'status-inactive';
-            const statusText = coffee.is_active ? 'Live' : 'Hidden';
-
-            row.innerHTML = `
-                <td>
-                    <div class="product-info-cell">
-                        <span class="product-name">${coffee.name}</span>
-                        <span class="product-meta">${coffee.species || 'Arabica'} | ${coffee.process || 'Washed'}</span>
-                    </div>
-                </td>
-                    ${marketInfo}
-                </div>
-            </td>
-            <td>
-                <span class="status-badge ${statusClass}">${statusText}</span>
-            </td>
-            <td class="admin-actions">
-                <button class="btn-icon edit-btn" data-id="${coffee.id}" title="Edit Specs"><i data-lucide="edit-3"></i></button>
-                <button class="btn-icon delete-btn" data-id="${coffee.id}" title="Delete"><i data-lucide="trash-2"></i></button>
-            </td>
-        `;
+            tableBody.appendChild(row);
+        });
             tableBody.appendChild(row);
         });
 
@@ -352,15 +331,18 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // --- 5. Modal Dynamic Form Switching ---
-document.getElementById('prod-type').addEventListener('change', (e) => {
-    const b2cFields = document.getElementById('b2c-fields');
-    const b2bFields = document.getElementById('b2b-fields');
-    
-    if (e.target.value === 'roasted_retail') {
-        b2cFields.style.display = 'block';
-        b2bFields.style.display = 'none';
-    } else {
-        b2cFields.style.display = 'none';
-        b2bFields.style.display = 'block';
-    }
-});
+const prodTypeEl = document.getElementById('prod-type');
+if (prodTypeEl) {
+    prodTypeEl.addEventListener('change', (e) => {
+        const b2cFields = document.getElementById('b2c-fields');
+        const b2bFields = document.getElementById('b2b-fields');
+        
+        if (e.target.value === 'roasted_retail') {
+            if (b2cFields) b2cFields.style.display = 'block';
+            if (b2bFields) b2bFields.style.display = 'none';
+        } else {
+            if (b2cFields) b2cFields.style.display = 'none';
+            if (b2bFields) b2bFields.style.display = 'block';
+        }
+    });
+}
