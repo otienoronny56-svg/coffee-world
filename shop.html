@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Roasted Coffee | Coffee World Investments Limited</title>
+    <title>Coming Soon | Coffee World Investments Limited</title>
     <link rel="icon" type="image/png" href="./assets/images/coffee-logo.png">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="b2c-page">
     <nav class="navbar">
@@ -23,10 +21,9 @@
                 <li><a href="journey.html">Our Process</a></li>
                 <li><a href="stories.html">Stories</a></li>
                 <li><a href="trade.html">Trade</a></li>
-                <li><a href="shop.html">Shop</a></li>
+                <li><a href="shop.html" class="active">Shop</a></li>
                 <li><a href="events.html">Events</a></li>
             </ul>
-            <button id="cart-btn" class="cta-btn">Cart (0)</button>
             <div class="hamburger" id="hamburger">
                 <span></span>
                 <span></span>
@@ -45,39 +42,25 @@
         <a href="events.html">Events</a>
         <a href="sustainability.html">Sustainability</a>
         <a href="contact.html">Contact</a>
-        <button id="cart-btn-mobile" class="cta-btn" style="width: 100%; text-align: center;">Cart (0)</button>
     </div>
 
-    <header class="page-header">
-        <div class="header-content">
-            <h1>Freshly Roasted for You</h1>
-            <p>Experience the finest Kenyan blends, roasted to perfection and delivered to your door.</p>
-        </div>
-    </header>
-
-    <main class="shop-container">
-        <div class="shop-filters" style="display: flex; justify-content: flex-end; margin-bottom: 2rem; gap: 1rem; align-items: center;">
-            <label for="sort-select" style="color: var(--gold); font-weight: 500;">Sort By:</label>
-            <select id="sort-select" style="padding: 0.6rem; border-radius: 4px; border: 1px solid var(--gold); background: rgba(11, 35, 24, 0.8); color: var(--white); cursor: pointer;">
-                <option value="newest">Newest Arrivals</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="roast-light">Roast: Light to Dark</option>
-                <option value="roast-dark">Roast: Dark to Light</option>
-            </select>
-        </div>
-        <div id="product-grid" class="product-grid">
-            <div class="loading-text">Brewing your catalog...</div>
+    <main class="coming-soon-container" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 2rem; background: linear-gradient(rgba(11, 35, 24, 0.9), rgba(11, 35, 24, 0.9)), url('./assets/images/roasting.jpg'); background-size: cover; background-position: center;">
+        <div class="coming-soon-content" style="max-width: 700px; animation: fadeInUp 1s ease-out;">
+            <div class="badge" style="display: inline-block; padding: 0.5rem 1.5rem; background: var(--gold); color: var(--dark-green); border-radius: 50px; font-weight: 600; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 1.5rem;">Coming Soon</div>
+            <h1 style="font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 8vw, 4rem); color: var(--white); line-height: 1.1; margin-bottom: 1.5rem;">The Art of Roasting.<br><span style="color: var(--gold);">Perfected.</span></h1>
+            <p style="font-size: 1.2rem; color: #ccc; margin-bottom: 2.5rem; line-height: 1.6;">We are currently fine-tuning our direct-to-consumer experience. Soon, you will be able to order our signature Kenyan roasts directly from Coffee World Investments Limited.</p>
+            <div class="coming-soon-actions" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="trade.html" class="cta-btn">Explore B2B Trade</a>
+                <a href="contact.html" class="cta-btn outline" style="background: transparent; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; padding: 0.8rem 2rem; border-radius: 4px; font-weight: 600; display: inline-block; transition: all 0.3s ease;">Contact for Inquiries</a>
+            </div>
         </div>
     </main>
 
     <footer class="global-footer">
         <div class="footer-container">
-            
             <div class="footer-col brand-col">
                 <img src="./assets/images/coffee-logo.png" alt="Coffee World Investments Limited Logo" class="footer-logo">
                 <p>Coffee World Investments Limited exports premium, traceable green coffee and roasts exceptional blends for the global market.</p>
-                
                 <div class="social-links">
                     <a href="javascript:void(0)" aria-label="Instagram">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
@@ -118,17 +101,6 @@
                 </ul>
             </div>
 
-            <div class="footer-col links-col">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="https://www.nyse.com/markets/commodities" target="_blank" rel="noopener">Arabica Coffee - New York Stock Coffee Exchange</a></li>
-                    <li><a href="https://www.lme.com/" target="_blank" rel="noopener">Robusta - London Coffee Exchange</a></li>
-                    <li><a href="http://www.ico.org/" target="_blank" rel="noopener">International Coffee Organization</a></li>
-                    <li><a href="https://www.iaco-interafrica.org/" target="_blank" rel="noopener">IACO InterAfrica Coffee Organization</a></li>
-                    <li><a href="https://nce.co.ke/" target="_blank" rel="noopener">Nairobi Coffee Exchange</a></li>
-                </ul>
-            </div>
-
             <div class="footer-col contact-col">
                 <h3>Contact Us</h3>
                 <ul>
@@ -152,13 +124,10 @@
 
         <div class="footer-bottom">
             <p>&copy; 2026 Coffee World Investments Limited. All rights reserved.</p>
-            <p class="developer-tag">Engineered by Systems by Ronny <span class="footer-dev-contact"><a href="tel:+254745806488">+254 745 806 488</a> <a href="https://wa.me/254745806488" target="_blank" aria-label="WhatsApp" class="wa-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.738 1.236l-.338-.039c-1.401-.04-2.736.213-3.914.775-1.226.581-2.26 1.36-3.09 2.334-.933 1.133-1.591 2.46-1.917 3.906-.344 1.542-.278 3.069.204 4.487.498 1.468 1.354 2.813 2.492 3.872C3.33 21.65 6.104 23 9 23c1.644 0 3.266-.306 4.759-.906 1.384-.557 2.625-1.338 3.612-2.334.933-1.133 1.591-2.46 1.917-3.906.344-1.542.278-3.069-.204-4.487-.498-1.468-1.354-2.813-2.492-3.872-1.137-1.06-2.73-1.782-4.388-2.088-1.539-.278-3.1-.235-4.52.177m12.084-9.295a1.063 1.063 0 00-1.496 1.497l2.99 2.99a1.064 1.064 0 001.496-1.497l-2.99-2.99z"></path></svg></a></span></p>
+            <p class="developer-tag">Engineered by Systems by Ronny <span class="footer-dev-contact"><a href="tel:+254745806488">+254 745 806 488</a> <a href="https://wa.me/254745806488" target="_blank" aria-label="WhatsApp" class="wa-link"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.738 1.236l-.338-.039c-1.401-.04-2.736.213-3.914.775-1.226.581-2.26 1.36-3.09 2.334-.933 1.133-1.591 2.46-1.917 3.906-.344 1.542-.278 3.069.204 4.487.498 1.468 1.354 2.813 2.492 3.872C3.33 21.65 6.104 23 9 23c1.644 0 3.266-.306 4.759-.906 1.384-.557 2.625-1.338 3.612-2.334.933-1.133-1.591-2.46 1.917-3.906.344-1.542.278-3.069-.204-4.487-.498-1.468-1.354-2.813-2.492-3.872-1.137-1.06-2.73-1.782-4.388-2.088-1.539-.278-3.1-.235-4.52.177m12.084-9.295a1.063 1.063 0 00-1.496 1.497l2.99 2.99a1.064 1.064 0 001.496-1.497l-2.99-2.99z"></path></svg></a></span></p>
         </div>
     </footer>
 
     <script src="./js/menu.js"></script>
-    <script type="module" src="./js/supabase-client.js"></script>
-    <script type="module" src="./js/cart.js"></script>
-    <script type="module" src="./js/shop.js"></script>
 </body>
 </html>
