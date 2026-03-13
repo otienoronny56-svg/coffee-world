@@ -54,14 +54,6 @@ function renderTable(dataArray) {
 
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>
-                <div class="coffee-cell">
-                    <strong style="font-size: 1.2rem; color: var(--gold);">${coffee.name}</strong>
-                    <div style="font-size: 0.85rem; color: #e0e0e0; line-height: 1.4;">
-                        ${coffee.description || ''}
-                    </div>
-                </div>
-            </td>
             <td class="region-cell"><strong>${originText}</strong><br><small>${speciesText}</small></td>
             <td><span class="grade-badge">${gradeText}</span></td>
             <td>${processText}</td>
