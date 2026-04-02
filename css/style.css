@@ -5,6 +5,11 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px; /* Offset for fixed header */
+}
+
 :root {
     --primary-green: #0b2318;
     --gold: #d4af37;
@@ -1139,6 +1144,22 @@ body {
     color: var(--gold);
     font-size: 2.5rem;
     margin-bottom: 1.5rem;
+}
+
+/* Performance: Skip rendering off-screen heavy sections */
+.home-about, 
+.home-mission-vision, 
+.home-flavours, 
+.home-origins, 
+.home-journey, 
+.home-cta,
+.pillars-container,
+.product-grid,
+.story-container,
+.events-grid,
+.stories-container {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
 }
 
 /* 1. Brief About Section */

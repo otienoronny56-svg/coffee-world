@@ -8,6 +8,8 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://unpkg.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="./css/style.css">
@@ -26,7 +28,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="brand">
-                <img src="./assets/images/coffee-logo.png" alt="Coffee World Investments Limited Logo" class="logo">
+                <img src="./assets/images/coffee-logo.png" alt="Coffee World Investments Limited Logo" class="logo" width="50" height="50" fetchpriority="high" decoding="async">
                 <span class="brand-text">Coffee World<br>Investments Limited</span>
             </a>
             <ul class="nav-links">
@@ -81,7 +83,7 @@
                 <a href="about.html" class="btn secondary-btn" style="margin-top: 1rem; display: inline-block;">Discover Our Story</a>
             </div>
             <div class="home-about-image">
-                <img src="./assets/images/home.png" alt="Coffee World Investments Processing" onerror="this.src='https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop'">
+                <img src="./assets/images/home.png" alt="Coffee World Investments Processing" onerror="this.src='https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=800&auto=format&fit=crop'" loading="lazy" decoding="async" width="600" height="400">
                 <div class="img-backdrop"></div>
             </div>
         </div>
@@ -109,7 +111,7 @@
             <div class="flavours-grid">
                 
                 <div class="flavour-card">
-                    <img src="https://images.pexels.com/photos/374885/pexels-photo-374885.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Dark Roast Coffee Beans">
+                    <img src="https://images.pexels.com/photos/374885/pexels-photo-374885.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Dark Roast Coffee Beans" loading="lazy" decoding="async" width="400" height="260">
                     <div class="flavour-content">
                         <h3>Dark Roast</h3>
                         <p>Bold and smoky with notes of dark chocolate and rich caramel. Our Dark Roast offers a full-bodied experience with low acidity, perfect for a powerful and intense cup.</p>
@@ -117,7 +119,7 @@
                 </div>
                 
                 <div class="flavour-card">
-                    <img src="https://images.pexels.com/photos/1493079/pexels-photo-1493079.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Medium Roast Coffee Beans">
+                    <img src="https://images.pexels.com/photos/1493079/pexels-photo-1493079.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Medium Roast Coffee Beans" loading="lazy" decoding="async" width="400" height="260">
                     <div class="flavour-content">
                         <h3>Medium Roast</h3>
                         <p>Smooth and perfectly balanced. Discover harmonious notes of toasted nuts and milk chocolate with a bright, clean finish. The quintessential all-day coffee.</p>
@@ -125,7 +127,7 @@
                 </div>
                 
                 <div class="flavour-card">
-                    <img src="https://images.pexels.com/photos/4109744/pexels-photo-4109744.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Freshly Ground Coffee">
+                    <img src="https://images.pexels.com/photos/4109744/pexels-photo-4109744.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Freshly Ground Coffee" loading="lazy" decoding="async" width="400" height="260">
                     <div class="flavour-content">
                         <h3>Freshly Ground</h3>
                         <p>Convenience meets quality. Our signature blends, ground to perfection for your preferred brewing method, unlocking a consistently fresh and aromatic cup every time.</p>
@@ -133,7 +135,7 @@
                 </div>
                 
                 <div class="flavour-card">
-                    <img src="https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Gourmet coffee being poured">
+                    <img src="https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Gourmet coffee being poured" loading="lazy" decoding="async" width="400" height="260">
                     <div class="flavour-content">
                         <h3>Gourmet Blends</h3>
                         <p>An exploration of the extraordinary. These curated single-origin and micro-lot coffees feature complex, wine-like acidity with vibrant notes of fruit and florals.</p>
@@ -155,7 +157,7 @@
                 <!-- Kenya -->
                 <div class="origin-card">
                     <div class="origin-image">
-                        <img src="./assets/images/kenya_highlands_plantation_1773387867333.png" alt="Kenyan Coffee Highlands">
+                        <img src="./assets/images/kenya_highlands_plantation_1773387867333.png" alt="Kenyan Coffee Highlands" loading="lazy" decoding="async" width="400" height="300">
                         <div class="origin-overlay">
                             <h3>Kenya</h3>
                             <span class="origin-region">Central Highlands</span>
@@ -174,7 +176,7 @@
                 <!-- Ethiopia -->
                 <div class="origin-card">
                     <div class="origin-image">
-                        <img src="./assets/images/ethiopia_drying_beds_1773387885108.png" alt="Ethiopian Coffee Forest">
+                        <img src="./assets/images/ethiopia_drying_beds_1773387885108.png" alt="Ethiopian Coffee Forest" loading="lazy" decoding="async" width="400" height="300">
                         <div class="origin-overlay">
                             <h3>Ethiopia</h3>
                             <span class="origin-region">Yirgacheffe & Sidamo</span>
@@ -193,7 +195,7 @@
                 <!-- Rwanda -->
                 <div class="origin-card">
                     <div class="origin-image">
-                        <img src="./assets/images/rwanda_lake_kivu_coffee_1773387902962.png" alt="Rwanda Lake Kivu Coffee">
+                        <img src="./assets/images/rwanda_lake_kivu_coffee_1773387902962.png" alt="Rwanda Lake Kivu Coffee" loading="lazy" decoding="async" width="400" height="300">
                         <div class="origin-overlay">
                             <h3>Rwanda</h3>
                             <span class="origin-region">Lake Kivu & Virunga</span>
@@ -212,7 +214,7 @@
                 <!-- Uganda -->
                 <div class="origin-card">
                     <div class="origin-image">
-                        <img src="./assets/images/uganda_mt_elgon_trees_1773387921936.png" alt="Uganda Mount Elgon Coffee">
+                        <img src="./assets/images/uganda_mt_elgon_trees_1773387921936.png" alt="Uganda Mount Elgon Coffee" loading="lazy" decoding="async" width="400" height="300">
                         <div class="origin-overlay">
                             <h3>Uganda</h3>
                             <span class="origin-region">Mount Elgon</span>
@@ -255,7 +257,7 @@
         <div class="footer-container">
             
             <div class="footer-col brand-col">
-                <img src="./assets/images/coffee-logo.png" alt="Coffee World Investments Limited Logo" class="footer-logo">
+                <img src="./assets/images/coffee-logo.png" alt="Coffee World Investments Limited Logo" class="footer-logo" loading="lazy" decoding="async" width="80" height="80">
                 <p>Coffee World Investments Limited Exports premium, traceable Kenyan green coffee and roasts exceptional blends for the global market.</p>
                 
                 <div class="social-links">

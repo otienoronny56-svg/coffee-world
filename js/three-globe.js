@@ -10,7 +10,8 @@ camera.position.set(0, 0, 4.5); // Positioned perfectly for the globe
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
 renderer.setSize(container.clientWidth, container.clientHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+// Performance optimization: Limit pixel ratio on high-DPI mobile devices
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); 
 container.appendChild(renderer.domElement);
 
 // --- 2. Premium Lighting ---
@@ -104,10 +105,21 @@ window.addEventListener('resize', () => {
     renderer.setSize(width, height);
 });
 
-// --- 6. Animation Loop ---
+// --- 6. Animation Loop & Performance Optimization ---
+let isVisible = true;
+const observer = new IntersectionObserver((entries) => {
+    isVisible = entries[0].isIntersecting;
+}, { threshold: 0.1 });
+
+// Start observing the hero section
+observer.observe(container);
+
 function animate() {
     requestAnimationFrame(animate);
     
+    // Performance: Pause all calculations and rendering if the globe is not on screen
+    if (!isVisible) return; 
+
     // Rotate the main globe
     globeGroup.rotation.y += 0.002;
     globeGroup.rotation.x += 0.0005; // Very slow tilt
