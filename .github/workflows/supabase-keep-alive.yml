@@ -2,15 +2,34 @@ name: Supabase Keep-Alive
 
 on:
   schedule:
-    - cron: '0 0 */3 * *' # Every 3 days at midnight
-  workflow_dispatch: # Allows manual triggering
+    - cron: '0 0 * * *' # Every day at midnight for extra safety
+  workflow_dispatch: # Allows manual triggering from the Actions tab
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Check for Secrets
+        run: |
+          if [ -z "${{ secrets.SUPABASE_URL }}" ]; then
+            echo "Error: SUPABASE_URL secret is missing."
+            exit 1
+          fi
+          if [ -z "${{ secrets.SUPABASE_ANON_KEY }}" ]; then
+            echo "Error: SUPABASE_ANON_KEY secret is missing."
+            exit 1
+          fi
+
       - name: Ping Supabase API
         run: |
-          curl -i -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/products?select=id&limit=1" \
+          response=$(curl -s -o /dev/null -w "%{http_code}" -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/products?select=id&limit=1" \
           -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+          
+          echo "HTTP Response Code: $response"
+          
+          if [ "$response" -eq 200 ] || [ "$response" -eq 204 ]; then
+            echo "Successfully pinged Supabase."
+          else
+            echo "Warning: Received HTTP $response. Project might be paused or RLS is blocked, but this still counts as activity."
+          fi
